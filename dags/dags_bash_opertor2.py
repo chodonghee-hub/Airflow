@@ -38,7 +38,7 @@ def print_result(**kwargs):
 def end_seq():
     print("end")
 
-with DAG( **dag_args ) as dag:
+with DAG() as dag:
     start = BashOperator(
         task_id='start',
         bash_command='echo "start!"',

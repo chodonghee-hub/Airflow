@@ -11,6 +11,7 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import BranchPythonOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.utils.trigger_rule import TriggerRule
+import pendulum
 
 def random_branch_path():
     from random import randint
@@ -38,7 +39,12 @@ def print_result(**kwargs):
 def end_seq():
     print("end")
 
-with DAG() as dag:
+with DAG(
+    dag_id="dags_bash_operator2",                              
+    schedule="0 0 * * *",                                     
+    start_date=pendulum.datetime(2021, 1, 1, tz="Asia/Seoul"),
+    catchup=False,
+) as dag:
     start = BashOperator(
         task_id='start',
         bash_command='echo "start!"',

@@ -7,9 +7,8 @@ def hello_airflow() :
     print("hello_airflow")
 
 with DAG(
-    dag_id="DAG_Simple_Example",                                
+    dag_id="dag_simple_example",                                
     schedule="0 0 * * *",                                       
-    schedule_interval="@daily",                                 
     start_date=pendulum.datetime(2023, 10, 1, tz="Asia/Seoul"), 
     catchup=False,                                              
 ) as dag : 

@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
+from airflow.utils.trigger_rule import TriggerRule
 import pendulum
 
 def hello_airflow() : 
@@ -14,7 +15,8 @@ with DAG(
 ) as dag : 
     op_start = BashOperator(
         task_id="op_start",
-        bash_command="start_point",
+        bash_command='echo "start!"',
+        trigger_rule=TriggerRule.NONE_FAILED,
     )
 
     op_print_msg = PythonOperator(
@@ -24,7 +26,8 @@ with DAG(
 
     op_end = BashOperator(
         task_id="op_end",
-        bash_command="complete",
+        bash_command='echo "complete!"',
+        trigger_rule=TriggerRule.NONE_FAILED,
     )
 
     op_start >> op_print_msg >> op_end

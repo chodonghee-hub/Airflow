@@ -70,14 +70,9 @@ with DAG(
         bash_command='echo "Take Out"'
     )
 
-    op_pay = BashOperator(
-        task_id="pay",
-        bash_command='echo "Pay"'
-    )
-
     op_finish = BashOperator(
         task_id="finish",
-        bash_command='echo "Pay"'
+        bash_command='echo "Finish"'
     )
 
     op_visit >> op_order >> op_pay >> op_bread

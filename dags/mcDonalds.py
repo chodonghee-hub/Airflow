@@ -6,6 +6,10 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.utils.trigger_rule import TriggerRule
 import pendulum
 
+op_sample = DummyOperator(
+    task_id="test",
+)
+
 def random_branch_path():
     from random import randint
 
@@ -20,6 +24,17 @@ with DAG(
     start_date=pendulum.datetime(2023, 1, 1, tz="Asia/Seoul"),
     catchup=False,
 ) as dag : 
+    #####################################################
+    #                  Burger Recipe                    #
+    #####################################################
+    op_recipe_start = DummyOperator(
+        task_id="burger_start"
+    )
+
+    op_recipe_finish = DummyOperator(
+        task_id="burger_finish"
+    )
+
     op_bread = BashOperator(
         task_id="bread",
         bash_command='echo "Bread ready"'
@@ -90,10 +105,12 @@ with DAG(
     )
 
     '''burger recipe'''
-    op_bread >> op_patty >> op_sauce >> op_lettuce >> op_pickle >> op_cheeze >> op_onion
+    op_recipe_start >> op_bread >> op_patty >> op_sauce >> op_lettuce >> op_pickle >> op_cheeze >> op_onion >> op_recipe_finish >> op_takeOut
 
-    op_visit >> op_order >> op_bread
-    op_visit >> op_order >> op_pay >> [op_onion, op_takeOut] >> op_finish
+    # op_visit >> op_order >> op_bread
+    op_visit >> op_order >> op_recipe_start
+    # op_visit >> op_order >> op_pay >> [op_onion, op_takeOut] >> op_finish
+    op_visit >> op_order >> op_pay >> op_takeOut >> op_finish
 
 
 

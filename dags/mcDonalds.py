@@ -11,6 +11,9 @@ def random_branch_path():
 
     return "work_in" if randint(1, 2) == 1 else "drive_through"
 
+def burger_order() : 
+    return "burger_start", "pay"
+
 with DAG(
     dag_id="McDrive",
     schedule="0 0 * * *",
@@ -59,10 +62,16 @@ with DAG(
         task_id="visit",
         bash_command='echo "McDonald Visit"'
     )
-
+    
+    '''
     op_order = BashOperator(
         task_id="order",
         bash_command='echo "Order"'
+    )
+    '''
+    op_order = BranchPythonOperator(
+        task_id="order",
+        python_callable=burger_order,
     )
 
     op_pay = BashOperator(

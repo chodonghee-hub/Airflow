@@ -91,7 +91,9 @@ with DAG(
 
     '''burger recipe'''
     op_bread >> op_patty >> op_sauce >> op_lettuce >> op_pickle >> op_cheeze >> op_onion
-    op_visit >> op_order >> [op_pay, op_bread] >> [op_onion, op_takeOut] >> op_finish
+
+    op_visit >> op_order >> op_bread
+    op_visit >> op_order >> op_pay >> [op_onion, op_takeOut] >> op_finish
 
 
 

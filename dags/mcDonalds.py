@@ -6,6 +6,11 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.utils.trigger_rule import TriggerRule
 import pendulum
 
+def random_branch_path():
+    from random import randint
+
+    return "work_in" if randint(1, 2) == 1 else "drive_through"
+
 with DAG(
     dag_id="McDrive",
     schedule="0 0 * * *",
@@ -75,8 +80,8 @@ with DAG(
         bash_command='echo "Finish"'
     )
 
-    op_visit >> op_order >> op_pay >> op_bread
-    op_bread >> op_patty >> op_sauce >> op_lettuce >> op_pickle >> op_cheeze >> op_onion
+    burger_recipe = op_bread >> op_patty >> op_sauce >> op_lettuce >> op_pickle >> op_cheeze >> op_onion
+    op_visit >> op_order >> [op_pay, burger_recipe] >> op_takeOut >> op_finish
 
 
 

@@ -80,8 +80,9 @@ with DAG(
         bash_command='echo "Finish"'
     )
 
-    burger_recipe = op_bread >> op_patty >> op_sauce >> op_lettuce >> op_pickle >> op_cheeze >> op_onion
-    op_visit >> op_order >> [op_pay, burger_recipe] >> op_takeOut >> op_finish
+    '''burger recipe'''
+    op_bread >> op_patty >> op_sauce >> op_lettuce >> op_pickle >> op_cheeze >> op_onion
+    op_visit >> op_order >> [op_pay, op_bread] >> [op_onion, op_takeOut] >> op_finish
 
 
 
